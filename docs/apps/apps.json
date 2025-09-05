@@ -2,17 +2,17 @@
   "apps": [
     {
       "key": "ticos",
-      "title": "Manual Prático TICOs — NR10/NR35 (Ultra)",
+      "title": "🗒️ Práticas — NR10/NR35 (Ultra)",
       "desc": "PWA offline com dashboard, lembrete e relatos com áudio.",
       "icon": "icons/icon-192.png",
       "url": "./PWA_TICO_Ultra/index.html"
     },
     {
       "key": "app2",
-      "title": "App 2 (substitua aqui)",
+      "title": "🏠 Regualização ",
       "desc": "Troque apps/app2.html ou aponte para uma URL externa.",
       "icon": "icons/icon-192.png",
-      "url": "./apps/app2.html"
+      "url": "./apps/lp-reg-10-ok-R-5.html"
     }
   ]
 }

@@ -46,6 +46,205 @@
     .tbtn.active{outline:2px solid var(--gold);border-color:#3a2a00}
     footer{color:#9bb4c4;font-size:.8rem;text-align:center;margin:18px 0}
   </style>
+  <style>
+    /* ===== Apple-ish Glass + Flow Patch (drop-in) ===== */
+:root{
+  --bg:#0d0f14; --fg:#eaf6ff; --muted:#a7c1cc; --card:#0f141c;
+  --acc:#00d1ff; --gold:#D4AF37;
+  --radius:18px; --radius-lg:22px;
+  --blur:22px; --stroke:rgba(255,255,255,.14);
+  --stroke-soft:rgba(255,255,255,.08);
+  --shadow-1:0 6px 18px rgba(0,0,0,.28);
+  --shadow-2:0 18px 48px rgba(0,0,0,.45);
+  --glow:0 0 0 1px rgba(0,209,255,.18), 0 8px 28px rgba(0,209,255,.10);
+}
+
+*{box-sizing:border-box}
+html,body{height:100%}
+body{
+  margin:0;
+  color:var(--fg);
+  -webkit-font-smoothing:antialiased;
+  -moz-osx-font-smoothing:grayscale;
+  font-family:ui-rounded, system-ui, -apple-system, Inter, Segoe UI, Roboto, Arial;
+  background:
+    radial-gradient(1200px 800px at 50% -10%, rgba(0,209,255,.10), transparent 60%),
+    linear-gradient(180deg,#0a0c12 0%, #0d0f14 40%, #0a0b0f 100%);
+  transition:background .4s ease;
+}
+body.theme-lux{
+  background:
+    radial-gradient(1200px 800px at 50% -10%, rgba(212,175,55,.08), transparent 60%),
+    linear-gradient(180deg,#0a0a0a 0%, #0b0b0b 40%, #0a0a0a 100%);
+}
+
+/* ===== Header glass ===== */
+.header{
+  position:sticky; top:0; z-index:10;
+  backdrop-filter:blur(var(--blur)) saturate(140%);
+  -webkit-backdrop-filter:blur(var(--blur)) saturate(140%);
+  background:linear-gradient(180deg, rgba(15,18,24,.65), rgba(15,18,24,.52));
+  border-bottom:1px solid var(--stroke);
+  box-shadow:0 10px 30px rgba(0,0,0,.35);
+  padding-top:env(safe-area-inset-top);
+}
+.inner{
+  max-width:980px;
+  margin:0 auto;
+  padding:clamp(10px, 1.4vw, 14px) clamp(14px, 2vw, 20px);
+  display:flex; gap:14px; align-items:center;
+}
+
+/* Logo com brilho suave */
+.logo{
+  width:46px; height:46px; border-radius:50%;
+  background:
+    radial-gradient(circle at 30% 30%, #ffffff66, transparent 60%),
+    conic-gradient(from 0deg, var(--acc), #6ee7ff, var(--acc));
+  position:relative;
+  box-shadow:inset 0 0 18px #000, var(--glow);
+  animation:pulse 2.6s infinite ease-in-out;
+}
+.logo:after{
+  content:"A"; display:grid; place-items:center; position:absolute; inset:0;
+  font-weight:900; color:#001218; font-size:22px; text-shadow:0 0 14px #00d1ff88;
+}
+@keyframes pulse{0%,100%{transform:scale(1)}50%{transform:scale(1.05)}}
+
+/* Títulos e kicker */
+h1{font-size:1.14rem; margin:.12rem 0 0; font-weight:800; letter-spacing:.2px}
+.kicker{font-size:.72rem; letter-spacing:.16em; color:var(--muted); text-transform:uppercase}
+
+/* ===== Segmented topbar (sem alterar HTML) ===== */
+.topbar{
+  display:flex; gap:0; align-items:center;
+  background:linear-gradient(180deg, rgba(255,255,255,.08), rgba(255,255,255,.04));
+  border:1px solid var(--stroke);
+  border-radius:14px; padding:4px;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.08), 0 8px 24px rgba(0,0,0,.25);
+}
+.tbtn{
+  appearance:none; border:0; cursor:pointer;
+  min-height:40px; padding:0 .9rem;
+  border-radius:10px;
+  color:#d8f4ff; background:transparent;
+  font-weight:600; letter-spacing:.2px;
+  transition:all .18s ease;
+}
+.tbtn + .tbtn{ margin-left:4px }
+.tbtn:hover{ background:rgba(255,255,255,.06) }
+.tbtn:active{ transform:translateY(1px) }
+.tbtn.active{
+  background:linear-gradient(180deg, rgba(0,0,0,.0), rgba(0,0,0,.18));
+  box-shadow: inset 0 0 0 1px rgba(255,255,255,.12), 0 6px 16px rgba(0,0,0,.25);
+  outline:2px solid rgba(212,175,55,.35);
+}
+
+/* ===== Grid & Cards ===== */
+.grid{
+  max-width:980px; margin:18px auto 22px;
+  display:grid; grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:16px; padding:0 clamp(14px, 2vw, 20px);
+}
+@media (max-width:560px){ .grid{ grid-template-columns:1fr } }
+
+.card{
+  background:
+    linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.03));
+  border:1px solid var(--stroke-soft);
+  border-radius:var(--radius-lg);
+  padding:16px; display:flex; gap:14px; align-items:center;
+  box-shadow: var(--shadow-1);
+  position:relative; overflow:hidden;
+}
+.card:before{
+  content:""; position:absolute; inset:0;
+  border-radius:inherit;
+  box-shadow: inset 0 0 0 1px rgba(255,255,255,.06);
+  pointer-events:none;
+}
+
+/* Ícone com vidro */
+.icon{
+  width:58px; height:58px; border-radius:16px;
+  background:linear-gradient(180deg,#0f1320,#0a0f18);
+  border:1px solid rgba(0,209,255,.28);
+  display:grid; place-items:center; font-size:26px; overflow:hidden;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.06), 0 8px 24px rgba(0,0,0,.35);
+}
+
+.title{font-weight:800; font-size:1.02rem; letter-spacing:.2px}
+.muted{color:var(--muted); font-size:.9rem; line-height:1.35}
+
+.row{display:flex; gap:10px; flex-wrap:wrap; margin-top:8px}
+
+/* Botões pill */
+.btn{
+  appearance:none; border:none; cursor:pointer;
+  background:linear-gradient(180deg,#13212e,#0e1924);
+  border:1px solid #163142; color:#e2f8ff;
+  padding:.72rem 1.05rem; border-radius:999px;
+  font-weight:700; letter-spacing:.2px;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.08), 0 8px 22px rgba(0,0,0,.35);
+  transition:transform .12s ease, box-shadow .2s ease, filter .2s ease;
+  min-height:44px; /* alvo de toque */
+}
+.btn:hover{ filter:brightness(1.06) }
+.btn:active{ transform:translateY(1px) }
+
+/* ===== Viewer modal ===== */
+.viewer{position:fixed; inset:0; background:#0009;
+  backdrop-filter:blur(8px); -webkit-backdrop-filter:blur(8px);
+  display:none; align-items:center; justify-content:center; padding:10px; z-index:20}
+.viewer.show{display:flex}
+
+.frame{
+  width:100%; max-width:1040px; height:86vh;
+  border-radius:20px; border:1px solid var(--stroke);
+  overflow:hidden; background:#0f1117; position:relative;
+  box-shadow: var(--shadow-2), 0 0 0 1px rgba(255,255,255,.04) inset;
+}
+
+.bar{
+  display:flex; align-items:center; justify-content:space-between;
+  padding:10px 12px;
+  border-bottom:1px solid var(--stroke);
+  background:
+    linear-gradient(180deg, rgba(10,15,20,.85), rgba(10,15,20,.65));
+  backdrop-filter:blur(10px); -webkit-backdrop-filter:blur(10px);
+}
+.bar .left{display:flex; align-items:center; gap:10px}
+.dot{width:10px; height:10px; border-radius:50%; background:var(--acc);
+  box-shadow:0 0 0 3px rgba(0,209,255,.18)}
+
+.iframe{width:100%; height:calc(86vh - 46px); border:0}
+
+.loader{
+  position:absolute; inset:46px 0 0 0;
+  display:grid; place-items:center;
+  background:linear-gradient(180deg,#0a0f14f0,#0b0f14e0);
+  backdrop-filter:blur(2px); transition:opacity .25s ease;
+  opacity:0; pointer-events:none;
+}
+.loader.show{opacity:1; pointer-events:auto}
+.spinner{
+  width:48px; height:48px; border-radius:50%;
+  border:3px solid #1f2a37; border-top-color:var(--acc);
+  animation:spin 1s linear infinite
+}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+/* Footer discreto */
+footer{color:#9bb4c4; font-size:.8rem; text-align:center; margin:18px 0; opacity:.9}
+
+/* Pequenos refinamentos responsivos */
+@media (max-width:420px){
+  .logo{width:44px;height:44px}
+  h1{font-size:1.06rem}
+  .title{font-size:1rem}
+  .icon{width:54px;height:54px}
+}
+  </style>
 </head>
 <body>
   <header class="header">
@@ -183,5 +382,118 @@ document.getElementById('btnInstall').onclick = async()=>{
 
 loadApps(); checkHash();
 </script>
+  <style>
+    /* ===== Luxara Theme — golden glass (append only) ===== */
+
+/* Troca o “accent”, strokes e glow quando .theme-lux estiver no <body> */
+body.theme-lux{
+  --acc: #D4AF37;                 /* ouro */
+  --stroke: rgba(255, 226, 150, .22);
+  --stroke-soft: rgba(255, 226, 150, .12);
+  --glow:
+    0 0 0 1px rgba(212,175,55,.20),
+    0 10px 34px rgba(212,175,55,.12);
+}
+
+/* Fundo Luxara (um pouco mais quente) */
+body.theme-lux{
+  background:
+    radial-gradient(1200px 800px at 50% -10%, rgba(212,175,55,.10), transparent 62%),
+    linear-gradient(180deg,#0a0a0a 0%, #0c0b0a 44%, #0a0a0a 100%);
+}
+
+/* Header mais translúcido + brilho “quente” nas bordas */
+body.theme-lux .header{
+  backdrop-filter: blur(var(--blur)) saturate(150%);
+  -webkit-backdrop-filter: blur(var(--blur)) saturate(150%);
+  background: linear-gradient(180deg, rgba(16,14,10,.54), rgba(18,16,12,.40));
+  border-bottom: 1px solid var(--stroke);
+  box-shadow:
+    0 12px 34px rgba(0,0,0,.42),
+    inset 0 -1px 0 rgba(255, 226, 150, .10);
+}
+
+/* Linha de ações (segmented) com foco dourado */
+body.theme-lux .topbar{
+  background: linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.03));
+  border-color: var(--stroke);
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.07),
+    0 10px 28px rgba(0,0,0,.30);
+}
+body.theme-lux .tbtn:hover{ background: rgba(255,255,255,.07) }
+body.theme-lux .tbtn.active{
+  outline: 2px solid rgba(212,175,55,.45);
+  box-shadow:
+    inset 0 0 0 1px rgba(255,255,255,.12),
+    0 8px 22px rgba(0,0,0,.28),
+    0 0 32px rgba(212,175,55,.12);
+}
+
+/* Logo mantém o pulso, mas com aura dourada */
+body.theme-lux .logo{
+  box-shadow: inset 0 0 18px #000, var(--glow);
+}
+body.theme-lux .logo:after{
+  text-shadow: 0 0 14px rgba(212,175,55,.55);
+}
+
+/* Cards em vidro quente com duplo contorno suave */
+body.theme-lux .card{
+  background: linear-gradient(180deg, rgba(255,255,255,.05), rgba(255,255,255,.025));
+  border-color: var(--stroke-soft);
+  box-shadow:
+    0 6px 18px rgba(0,0,0,.28),
+    0 0 0 1px rgba(255,255,255,.04) inset;
+}
+body.theme-lux .card:before{
+  box-shadow: inset 0 0 0 1px rgba(255,255,255,.05);
+}
+
+/* Ícone do app com aro dourado */
+body.theme-lux .icon{
+  background: linear-gradient(180deg,#12131a,#0c0f14);
+  border-color: rgba(212,175,55,.30);
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.06),
+    0 8px 24px rgba(0,0,0,.34);
+}
+
+/* Botões pill com glow ouro discreto */
+body.theme-lux .btn{
+  background: linear-gradient(180deg,#1a1c21,#13161a);
+  border-color: rgba(212,175,55,.28);
+  color: #f6ecd3;
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.06),
+    0 10px 26px rgba(0,0,0,.35),
+    0 0 0 1px rgba(212,175,55,.10);
+}
+body.theme-lux .btn:hover{ filter: brightness(1.07) }
+
+/* Viewer/Bar com vidro translúcido quente e dot dourado */
+body.theme-lux .frame{
+  border-color: var(--stroke);
+  box-shadow:
+    0 18px 48px rgba(0,0,0,.45),
+    0 0 0 1px rgba(255,255,255,.04) inset;
+}
+body.theme-lux .bar{
+  background: linear-gradient(180deg, rgba(20,16,10,.86), rgba(18,14,10,.62));
+  border-bottom-color: var(--stroke);
+}
+body.theme-lux .dot{
+  background: var(--acc);
+  box-shadow: 0 0 0 3px rgba(212,175,55,.22);
+}
+
+/* Loader levemente âmbar para combinar */
+body.theme-lux .loader{
+  background: linear-gradient(180deg, rgba(18,14,10,.92), rgba(16,13,10,.85));
+}
+
+/* Tipografia: levemente mais quente no Luxara */
+body.theme-lux .muted{ color: #c9bfa6 }
+  </style>
 </body>
 </html>

@@ -1,0 +1,18 @@
+{
+  "apps": [
+    {
+      "key": "ticos",
+      "title": "Manual Prático TICOs — NR10/NR35 (Ultra)",
+      "desc": "PWA offline com dashboard, lembrete e relatos com áudio.",
+      "icon": "icons/icon-192.png",
+      "url": "./PWA_TICO_Ultra/index.html"
+    },
+    {
+      "key": "app2",
+      "title": "App 2 (substitua aqui)",
+      "desc": "Troque apps/app2.html ou aponte para uma URL externa.",
+      "icon": "icons/icon-192.png",
+      "url": "./apps/app2.html"
+    }
+  ]
+}
